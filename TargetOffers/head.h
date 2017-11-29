@@ -38,9 +38,12 @@ void testprintListFromTailToHead();
  void createBiT(TreeNode * & R, const vector<int> & pre, const vector<int> & vin, int sp, int ep, int sv, int ev);
  void printBiT(TreeNode * root, const ModeBiT & printmode);
  void testreConstructBinaryTree();
-
-
  int Fibonacci(int n);
  void testFibonacci();
-
+ int jumpFloor(int number);
+ void testjumpFloor();
+ int  NumberOf1(int n);
+ void testNumberOf1();
+ double Power(double base, int exponent);
+ void testPower();
 #endif

@@ -314,8 +314,112 @@ void testFibonacci()
 }
 /*题目描述
 一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
-思路：
+思路：动态规划问题，
 */
 int jumpFloor(int number) {
+	if (number < 3)
+		return number;
+	vector<int> steps;
+	steps.push_back(0);
+	steps.push_back(1);
+	steps.push_back(2);
+	
+	for (int i = 3; i <= number; ++i)
+	{
+		steps.push_back(steps[i - 1] + steps[i - 2]);
+	}
+	return steps[number];
+}
+
+void testjumpFloor()
+{
+	int number;
+	while (cin >> number)
+	{
+		int result = jumpFloor(number);
+		cout << "The stair:" << number << " has " << result << " ways to Jump" << endl;
+	}
+}
+/*题目描述
+一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
+思路：	初始条件：x(2) = 2, x(1) = 1;
+		递推公式：x(n) = x(n-1)+x(n-2).....+x(1) 
+				  x(n-1) = x(n-2)+......+x(1)
+		递推结果：x(n) = 2^(n-1)*(x(1))
+,
+*/
+int jumpFloorII(int number) {
+	return pow(2, number - 1);
+}
+/*题目描述
+我们可以用2*1的小矩形横着或者竖着去覆盖更大的矩形。请问用n个2*1的小矩形无重叠地覆盖一个2*n的大矩形，总共有多少种方法？
+思路：
+*/
+int rectCover(int number) {
+	if (number < 1)
+		return 0;
+	vector<int> steps;
+	steps.push_back(0);
+	steps.push_back(1);
+	steps.push_back(2);
+
+	for (int i = 3; i <= number; ++i)
+	{
+		steps.push_back(steps[i - 1] + steps[i - 2]);
+	}
+	return steps[number];
+}
+/*题目描述
+输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。
+思路：利用位运算 n & (n-1) 相当于消掉最右边一个1，从左往右消掉所有的1 时，n==0
+*/
+int  NumberOf1(int n) {
+	int count = 0;
+	while (n != 0)
+	{
+		++count;
+		n = n&(n - 1);
+	}
+	return count;
+}
+void testNumberOf1()
+{
+	int n = 0;
+	while (cin >> n){
+		int result = NumberOf1(n);
+		cout << "The count of 1 in:" << n << " is :" << result << endl;
+	}
+}
+/*题目描述
+给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+思路：
+*/
+double Power(double base, int exponent) {
+	//return pow(base, (double)exponent);
+	long long p = abs((long long)exponent);
+	double ret = 1.0;
+	while (p > 0){
+		if (p & 1) ret *= base;
+		base *= base;
+		p >>= 1;			
+	}
+	return exponent < 0 ? 1 / ret : ret;
+}
+void testPower()
+{
+	double b;
+	int e;
+	while (cin >> b >> e){
+		double result = Power(b, e);
+		cout << "The " << b << "^" << e << " = " << result << endl;
+	}
+}
+/*题目描述
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，
+使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，
+并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+思路：
+*/
+void reOrderArray(vector<int> &array) {
 
 }

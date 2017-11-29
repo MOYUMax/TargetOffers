@@ -12,8 +12,10 @@ int _tmain(int argc, _TCHAR* argv[])
 //	testreplaceSpace();				//1.2
 //	testprintListFromTailToHead();	//1.3
 //	testreConstructBinaryTree();	//1.4
-	testFibonacci();				//1.6
-
+//	testFibonacci();				//1.6
+//	testjumpFloor();				//1.7
+//	testNumberOf1();				//1.8
+	testPower();					//1.9
 //	Singleton* sig1 = Singleton::getInstance();
 //	Singleton* sig2 = Singleton::getInstance();
 
