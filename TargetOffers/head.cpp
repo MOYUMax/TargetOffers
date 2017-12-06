@@ -224,13 +224,56 @@ void printBiT(TreeNode * root,const ModeBiT & printmode)
 		cout << root->val;
 		printBiT(root->right, printmode);
 	}
-	else{
+	else if (ModeBiT::PostOrder == printmode){
 		printBiT(root->left, printmode);
 		printBiT(root->right, printmode);
 		cout << root->val;
 	}
+	else if (ModeBiT::BreadthFirstTravel == printmode){
+		queue<TreeNode*> qu;
+		qu.push(root);
+		breadth_first_travel(qu);
+	}
+	else if(ModeBiT::DepthFirstTravel == printmode){
+		stack<TreeNode *> st;
+		st.push(root);
+		depth_first_travel(st);
+	}
+	else{
+		cout << "Printmode error, Please check!\n";
+	}
 }
-
+void breadth_first_travel(queue<TreeNode*> & qu){
+	if (qu.empty())
+		return ;
+	else
+	{
+		TreeNode * front = qu.front();
+		if (nullptr == front)
+			return;
+		cout << front->val << " ";
+		if (nullptr != front->left)
+			qu.push(front->left);
+		if (nullptr != front->right)
+			qu.push(front->right);
+		qu.pop();
+		breadth_first_travel(qu);
+	}
+}
+void depth_first_travel(stack<TreeNode *> & st){
+	if (st.empty())
+		return;
+	else{
+		TreeNode * top = st.top();
+		cout << top->val << " ";
+		st.pop();
+		if (nullptr != top->right)
+			st.push(top->right);
+		if (nullptr != top->left)
+			st.push(top->left);		
+		depth_first_travel(st);
+	}
+}
 void testreConstructBinaryTree()
 {
 	vector<int> pre = { 1, 2, 4, 7, 3, 5, 6, 8 };
@@ -251,11 +294,11 @@ void testreConstructBinaryTree()
 */
 stack<int> stack1;
 stack<int> stack2;
-void push(int node) {
+void Push(int node) {
 	stack1.push(node);
 }
 
-int pop() {
+int Pop() {
 	int ret = -1;
 	if (stack2.empty()){
 		while (!stack1.empty())
@@ -349,7 +392,7 @@ void testjumpFloor()
 ,
 */
 int jumpFloorII(int number) {
-	return pow(2, number - 1);
+	return int(pow(2, number - 1));
 }
 /*题目描述
 我们可以用2*1的小矩形横着或者竖着去覆盖更大的矩形。请问用n个2*1的小矩形无重叠地覆盖一个2*n的大矩形，总共有多少种方法？
@@ -418,8 +461,404 @@ void testPower()
 输入一个整数数组，实现一个函数来调整该数组中数字的顺序，
 使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，
 并保证奇数和奇数，偶数和偶数之间的相对位置不变。
-思路：
+思路：从左开始，把所有偶数往后移动，把所有奇数往前移动
 */
 void reOrderArray(vector<int> &array) {
+	int length = int(array.size());
+	int i = 0, j = 1;
+	int tempA = 0, tempB = 0;
+	int count = 0;
+	for (size_t p = 0; p < array.size(); ++p)
+		if (0 != array[p] % 2)
+			++count;
+
+	while (i < count && j < length)
+	{
+		while (i < count && 0 != (array[i] % 2))
+			++i;
+		if (i == count)
+			return;
+		tempA = array[i];
+		j = i + 1;
+
+		while (j < length && 0 == (array[j] % 2)){
+			tempB = array[j];
+			array[j] = tempA;
+			tempA = tempB;
+			++j;
+		}
+		if (j == length)
+			return;
+		tempB = array[j];
+		array[j] = tempA;
+		array[i] = tempB;
+		++i;
+		++j;
+		if (j == length - 1 && 0 == (array[j] % 2))
+			return;
+	}
+	/*int length = int(array.size());
+	vector<int>::iterator it = array.begin();
+	for (int i = 0; i < length; ++i){
+		if (*it % 2 == 0){
+			int tmp = *it;
+			array.erase(it);
+			array.push_back(tmp);
+		}
+		else
+			++it;
+	}*/
+}
+void testreOrderArray()
+{
+	vector<int> array = { 1, 3, 5, 7, 2, 4, 6 };
+	reOrderArray(array);
+	cout << "After reOrderArray:";
+	for (size_t i = 0; i < array.size(); ++i)
+		cout << array[i] << " ";
+}
+/*题目描述
+输入一个链表，反转链表后，输出链表的所有元素。
+思路：
+*/
+ListNode* ReverseList(ListNode* pHead) {
+	if (nullptr == pHead || nullptr == pHead->next)
+		return pHead;
+	ListNode * newHead = nullptr;
+	ListNode * p = pHead;
+	ListNode * q = nullptr;
+	while (nullptr != p){
+		q = p->next;
+		p->next = newHead;
+		newHead = p;
+		p = q;
+	}
+	return newHead;
+}
+/*题目描述
+输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+思路：
+*/
+ListNode* Merge(ListNode* pHead1, ListNode* pHead2)
+{
+	if (nullptr == pHead1 && nullptr == pHead2)
+		return nullptr;
+	if (nullptr == pHead1 && nullptr != pHead2)
+		return pHead2;
+	if (nullptr != pHead1 && nullptr == pHead2)
+		return pHead1;
+
+	ListNode *ret = nullptr;
+	ListNode *p1, *p2;
+	if (pHead1->val <= pHead2->val){
+		ret = pHead1;
+		p1 = pHead1->next;
+		p2 = pHead2;
+	}
+	else{
+		ret = pHead2;
+		p1 = pHead1;
+		p2 = pHead2->next;
+	}
+	ListNode *p = ret;
+	while (nullptr != p1 && nullptr != p2){
+		if (p1->val <= p2->val){
+			p->next = p1;
+			p1 = p1->next;
+			p = p->next;
+		}
+		else{
+			p->next = p2;
+			p2 = p2->next;
+			p = p->next;
+		}
+	}
+	while (nullptr != p1){
+		p->next = p1;
+		p1 = p1->next;
+		p = p->next;
+	}
+	while (nullptr != p2){
+		p->next = p2;
+		p2 = p2->next;
+		p = p->next;
+	}
+	return ret;
+}
+
+void testMerge()
+{
+	ListNode *pHead1 = new ListNode(100), *pHead2 = new ListNode(222);
+	for (int i = 5, j = 10; i > 0; --i, j -= 2){
+		ListNode * tmp1 = new ListNode(i);
+		tmp1->next = pHead1;
+		pHead1 = tmp1;
+		ListNode * tmp2 = new ListNode(j);
+		tmp2->next = pHead2;
+		pHead2 = tmp2;
+	}
+	ListNode *result = Merge(pHead1, pHead2);
+	while (result){
+		cout << result->val << " ";
+		result = result->next;
+	}
+}
+/*题目描述
+输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+思路：子树定义：树B是树A其中一个结点及其所有子孙以相同方式构成的树。
+      判定方法：
+	  测试用例:
+	  {8,8,7,9,2,#,#,#,#,4,7},{8,9,2}
+
+	  对应输出应该为:
+
+	  true
+
+	  你的输出为:
+
+	  false
+*/
+bool HasSubtree(TreeNode* pRoot1, TreeNode* pRoot2)
+{
+	bool flag = false;
+	if (nullptr != pRoot1&&nullptr != pRoot2){
+		if (pRoot1->val == pRoot2->val)
+			flag = isSubTree(pRoot1, pRoot2);
+		if (!flag)
+			flag = HasSubtree(pRoot1->left, pRoot2);
+		if (!flag)
+			flag = HasSubtree(pRoot1->right, pRoot2);
+	}
+	return flag;
+}
+
+bool isSubTree(TreeNode* pRoot1, TreeNode* pRoot2){
+	if (nullptr == pRoot2)
+		return true;
+	if (nullptr == pRoot1)
+		return false;
+	if (pRoot1->val != pRoot2->val)
+		return false;	
+	return isSubTree(pRoot1->left, pRoot2->left) && isSubTree(pRoot1->right, pRoot2->right);
+}
+/*题目描述
+操作给定的二叉树，将其变换为源二叉树的镜像。
+思路：镜像：左右子树以根节点为对称轴进行对调（注意：进入子树后，不是递归的方式）
+编程解决：递归交换左右子树的指针。
+*/
+void Mirror(TreeNode *pRoot) {
+	if (nullptr == pRoot)
+		return;
+	else{
+		TreeNode * temp = pRoot->left;
+		pRoot->left = pRoot->right;
+		pRoot->right = temp;
+		Mirror(pRoot->left);
+		Mirror(pRoot->right);
+	}
+}
+void testMirror()
+{
+	vector<int> pre = { 1, 2, 4, 7, 3, 5, 6, 8 };
+	vector<int> vin = { 4, 7, 2, 1, 5, 3, 8, 6 };
+	TreeNode * root = reConstructBinaryTree(pre, vin);
+	Mirror(root);
+	cout << "PreOrder Print:";
+	printBiT(root, ModeBiT::PreOrder);
+	cout << "\nInOrder Print:";
+	printBiT(root, ModeBiT::InOrder);
+	cout << "\nPostOrder Print:";
+	printBiT(root, ModeBiT::PostOrder);
+}
+/*题目描述
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，
+例如，如果输入如下矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+思路：顺时针：先递增列，到达n,再递增行，到达n,再递减列到达0，再递减行，到达1，再递增列，如此直到矩阵全部输出。
+	输出存储到vector 容器，相当于矩阵和数组下标的一一对应。
+*/
+vector<int> printMatrix(vector<vector<int> > matrix) {
+	vector<int> ret;
+	ret.clear();
+
+	int row = matrix.size();
+	int col = matrix[0].size();
+	//每次打印一圈，计算圈数
+	int circle = ((row < col ? row : col) - 1) / 2 + 1;
+	//循环打印circle 圈
+	for (int i = 0; i < circle; ++i){
+		//第i行
+		int j = i;
+		for (; j < col - i; ++j)
+			ret.push_back(matrix[i][j]);
+		//第circle-i列
+		int temp = i + 1;
+		--j;
+		for (; temp < row - i; ++temp)
+			ret.push_back(matrix[temp][j]);
+		//第circle-i行
+		--temp;
+		--j;
+		for (; j >= i && (row - i - 1 != i); --j)
+			ret.push_back(matrix[temp][j]);
+		//第i列
+		++j;
+		--temp;
+		for (; temp > i && (col-i-1!=i); --temp)
+			ret.push_back(matrix[temp][j]);
+	}
+	return ret;
+}
+
+void testprintMatrix()
+{
+	/*vector<vector<int>> mat{
+		{ 1, 2, 3, 4 },
+		{ 5, 6, 7, 8 },
+		{ 9, 10, 11, 12 },
+		{ 13, 14, 15, 16 }
+	};*/
+	/*vector<vector<int>> mat{
+		{ 1 },
+		{ 5 },
+		{ 9 },
+		{ 13 }
+	};*/
+	vector<vector<int>> mat{
+		{ 1, 2, 3, 4 }
+	};
+	vector<int> result = printMatrix(mat);
+	for (size_t i = 0; i < result.size(); ++i)
+		cout << result.at(i) << " ";
+}
+/*题目描述
+定义栈的数据结构，请在该类型中实现一个能够得到栈最小元素的min函数。
+思路：
+*/
+
+void push(int value) {
+	st.vt.push_back(value);
+	++st.top;
+}
+void pop() {
+	st.vt.pop_back();
+	--st.top;
+}
+int top() {
+	return st.vt[st.top];
+}
+int min() {
+	if (st.top < 0)
+		return INT_MIN;
+	if (0 == st.top)
+		return st.vt[0];
+	int ret = st.vt[0];
+	for (int i = 1; i <= st.top; ++i){
+		if (ret > st.vt[i])
+			ret = st.vt[i];
+	}
+	return ret;
+}
+void testStack()
+{
+	for (int i = 5; i > 0; --i)
+		push(i);
+
+	cout << "The min():" << min() << endl;
+	cout << "The top():" << top() << endl;
+	pop();
+	cout << "The min():" << min() << endl;
+	cout << "The top():" << top() << endl;
+	push(0);
+	push(100);
+	cout << "The min():" << min() << endl;
+	cout << "The top():" << top() << endl;
+}
+/*题目描述
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。
+假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4，5,3,2,1是该压栈序列对应的一个弹出序列，
+但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+思路：用一个栈模拟入栈与出栈过程。按压入顺序数组的数入栈，直到入栈的数（即栈顶）与出栈顺序数组的数相等，
+	则按逆序将模拟栈里与出栈顺序数组相同的数弹出；修改出栈顺序数组的索引。* 如果循环结束，而stack中还有元素，就说明arr2序列不是pop序列。
+*/
+bool IsPopOrder(vector<int> pushV, vector<int> popV) {
+	int lenPush = int(pushV.size());
+	int lenPop = int(popV.size());
+	if (lenPush != lenPop)
+		return false;
+	stack<int> stk;
+	int j = 0;
+	for (int i = 0; i < lenPush; ++i){
+		stk.push(pushV[i]);
+		while (j < lenPop&&popV[j] == stk.top()){
+			stk.pop();
+			++j;
+		}
+	}
+	if (!stk.empty())
+		return false;
+	else
+		return true;
+}
+void testIsPopOrder()
+{
+	vector<int> PUSH{ 1, 2, 3, 4, 5 };
+	vector<int> POPA{ 4, 5, 3, 2, 1 };
+	vector<int> POPB{ 4, 3, 5, 1, 2 };
+	cout << "POPA is Stack output from PUSH?" << IsPopOrder(PUSH, POPA) << endl;
+	cout << "POPB is Stack output from PUSH?" << IsPopOrder(PUSH, POPB) << endl;
+}
+/*题目描述
+从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+思路：层序遍历树，采用递归的方式,借助队列，取出队列头节点并打印，并将其左右子节点入队，
+*/
+vector<int> PrintFromTopToBottom(TreeNode* root) {
+	vector<int> ret;
+	deque<TreeNode *> dq;
+	if (nullptr == root)
+		return ret;
+	else
+	{
+		dq.push_back(root);
+		level_traversal(dq, ret);
+	}
+	return ret;
+}
+void level_traversal(deque<TreeNode*> & dq, vector<int> & vti)
+{
+	if (dq.empty())
+		return;
+	else{
+		TreeNode * front = dq.front();
+		vti.push_back(front->val);
+		if (nullptr != front->left)
+			dq.push_back(front->left);
+		if (nullptr != front->right)
+			dq.push_back(front->right);
+		dq.pop_front();
+		level_traversal(dq, vti);
+	}
+}
+void testPrintFromTopToBottom()
+{
+	vector<int> pre = { 1, 2, 4, 7, 3, 5, 6, 8 };
+	vector<int> vin = { 4, 7, 2, 1, 5, 3, 8, 6 };
+	TreeNode * root = reConstructBinaryTree(pre, vin);
+	vector<int> result = PrintFromTopToBottom(root);
+	cout << "LevelTraversal Print:";
+	for (auto i : result){
+		cout << i << " ";
+	}
+	cout << "\nBreadthFirstTravel Print:";
+	printBiT(root, ModeBiT::BreadthFirstTravel);
+	cout << "\nDepthFirstTravel Print:";
+	printBiT(root, ModeBiT::DepthFirstTravel);
+}
+/*题目描述
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。
+假设输入的数组的任意两个数字都互不相同。
+思路：
+*/
+bool VerifySquenceOfBST(vector<int> sequence) {
 
 }

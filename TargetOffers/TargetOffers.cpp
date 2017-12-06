@@ -15,7 +15,16 @@ int _tmain(int argc, _TCHAR* argv[])
 //	testFibonacci();				//1.6
 //	testjumpFloor();				//1.7
 //	testNumberOf1();				//1.8
-	testPower();					//1.9
+//	testPower();					//1.9
+//	testreOrderArray();				//1.13
+//	testMerge();					//1.14
+//	testMirror();					//1.15
+//	testprintMatrix();				//1.16
+//	testStack();					//1.17
+//	testIsPopOrder();				//2.1
+	testPrintFromTopToBottom();		//2.2
+
+
 //	Singleton* sig1 = Singleton::getInstance();
 //	Singleton* sig2 = Singleton::getInstance();
 
