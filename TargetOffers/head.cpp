@@ -5,23 +5,23 @@
 在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
 请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
 两种思路：一种是，把每一行看成有序递增的数组，利用二分查找，通过遍历每一行得到答案，时间复杂度是nlogn
-	另外一种思路是：利用二维数组由上到下，由左到右递增的规律，
-	那么选取右上角或者左下角的元素a[row][col]与target进行比较，
-	当target小于元素a[row][col]时，那么target必定在元素a所在行的左边,即col--；
-	当target大于元素a[row][col]时，那么target必定在元素a所在列的下边,即row++；
+另外一种思路是：利用二维数组由上到下，由左到右递增的规律，
+那么选取右上角或者左下角的元素a[row][col]与target进行比较，
+当target小于元素a[row][col]时，那么target必定在元素a所在行的左边,即col--；
+当target大于元素a[row][col]时，那么target必定在元素a所在列的下边,即row++；
 第一种的时间复杂度是mlogn，第二种是m+n，（m行n列），只有在m比n小很多时第一种方法才比第二种好
 此处实现第二种。
 */
 bool Find(int target, vector<vector<int> > array) {
 	/*for each (vector<int> var in array)
 	{
-		if (binary_search(var.begin(), var.end(), target) == true)
-			return true;
+	if (binary_search(var.begin(), var.end(), target) == true)
+	return true;
 	}
 	for (vector<vector<int>>::iterator vvit = array.begin(); vvit != array.end(); ++vvit)
 	{
-		if (binary_search(vvit->begin(), vvit->end(), target) == true)
-			return true;
+	if (binary_search(vvit->begin(), vvit->end(), target) == true)
+	return true;
 	}
 	return false;
 	*/
@@ -52,9 +52,9 @@ bool Find(int target, vector<vector<int> > array) {
 void testFind()
 {
 	vector<vector<int>> array = {
-		{1,2,3},
-		{4,5,6},
-		{7,8,9}
+		{ 1, 2, 3 },
+		{ 4, 5, 6 },
+		{ 7, 8, 9 }
 	};
 	int target = 0;
 	while (cin >> target){
@@ -76,7 +76,7 @@ void replaceSpace(char *str, int length) {
 	}
 	if (count == 0)
 		return;
-	
+
 	int j = i + 2 * count;
 	while (i >= 0 && j >= 0){
 		if (str[i] == ' '){
@@ -93,11 +93,11 @@ void replaceSpace(char *str, int length) {
 	return;
 	/*string tempstr(str);
 	for (string::iterator sit = tempstr.begin(); sit != tempstr.end(); ++sit){
-		if (' ' == *sit){
-			tempstr.replace(sit, sit + 1, "%");
-			tempstr.insert(++sit, '0');
-			tempstr.insert(sit, '2');
-		}
+	if (' ' == *sit){
+	tempstr.replace(sit, sit + 1, "%");
+	tempstr.insert(++sit, '0');
+	tempstr.insert(sit, '2');
+	}
 	}
 	cout << "tempstr:" << tempstr << endl;
 	int len = tempstr.length();
@@ -139,10 +139,10 @@ vector<int> printListFromTailToHead(ListNode* head) {
 	p = q;
 	q = r;
 	while (nullptr != q->next){
-		r = q->next;
-		q->next = p;
-		p = q;
-		q = r;
+	r = q->next;
+	q->next = p;
+	p = q;
+	q = r;
 	}
 	q->next = p;
 	p = q;
@@ -150,8 +150,8 @@ vector<int> printListFromTailToHead(ListNode* head) {
 	q = nullptr;
 	r = nullptr;
 	while (nullptr != p){
-		result.push_back(p->val);
-		p = p->next;
+	result.push_back(p->val);
+	p = p->next;
 	}
 	return result;*/
 }
@@ -189,7 +189,7 @@ TreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
 	return root;
 }
 
-void createBiT(TreeNode * & R ,const vector<int> & pre, const vector<int> & vin, int sp, int ep, int sv, int ev)
+void createBiT(TreeNode * & R, const vector<int> & pre, const vector<int> & vin, int sp, int ep, int sv, int ev)
 {
 	if (sp <= ep)
 	{
@@ -197,19 +197,19 @@ void createBiT(TreeNode * & R ,const vector<int> & pre, const vector<int> & vin,
 		R->val = pre[sp];
 		R->left = R->right = nullptr;
 		int pos = -1;
-		for (int i = sv; i <= ev;++i)
+		for (int i = sv; i <= ev; ++i)
 			if (vin[i] == pre[sp]){
 				pos = i;
 				break;
 			}
 		if (pos < 0)
 			return;
-		createBiT(R->left, pre, vin, sp + 1, sp + pos -sv , sv,pos-1 );
-		createBiT(R->right, pre, vin, sp + pos -sv + 1, ep, pos + 1, ev);
+		createBiT(R->left, pre, vin, sp + 1, sp + pos - sv, sv, pos - 1);
+		createBiT(R->right, pre, vin, sp + pos - sv + 1, ep, pos + 1, ev);
 	}
 }
 
-void printBiT(TreeNode * root,const ModeBiT & printmode)
+void printBiT(TreeNode * root, const ModeBiT & printmode)
 {
 	if (nullptr == root)
 		return;
@@ -234,7 +234,7 @@ void printBiT(TreeNode * root,const ModeBiT & printmode)
 		qu.push(root);
 		breadth_first_travel(qu);
 	}
-	else if(ModeBiT::DepthFirstTravel == printmode){
+	else if (ModeBiT::DepthFirstTravel == printmode){
 		stack<TreeNode *> st;
 		st.push(root);
 		depth_first_travel(st);
@@ -245,7 +245,7 @@ void printBiT(TreeNode * root,const ModeBiT & printmode)
 }
 void breadth_first_travel(queue<TreeNode*> & qu){
 	if (qu.empty())
-		return ;
+		return;
 	else
 	{
 		TreeNode * front = qu.front();
@@ -270,7 +270,7 @@ void depth_first_travel(stack<TreeNode *> & st){
 		if (nullptr != top->right)
 			st.push(top->right);
 		if (nullptr != top->left)
-			st.push(top->left);		
+			st.push(top->left);
 		depth_first_travel(st);
 	}
 }
@@ -314,8 +314,8 @@ int Pop() {
 
 /*
 题目描述
-把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 
-输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。 
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。
+输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。
 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。
 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
 思路：最小元素必定就时那个前大于后的后元素。
@@ -339,7 +339,7 @@ int minNumberInRotateArray(vector<int> rotateArray) {
 int Fibonacci(int n) {
 	if (n > 39)
 		return -1;
-	vector<int> fib(n+2);
+	vector<int> fib(n + 2);
 	fib[0] = 0;
 	fib[1] = 1;
 	for (int i = 2; i <= n; ++i)
@@ -351,7 +351,7 @@ int Fibonacci(int n) {
 void testFibonacci()
 {
 	int n;
-	while (cin>>n){
+	while (cin >> n){
 		cout << "The Fib(" << n << ") = " << Fibonacci(n) << endl;
 	}
 }
@@ -366,7 +366,7 @@ int jumpFloor(int number) {
 	steps.push_back(0);
 	steps.push_back(1);
 	steps.push_back(2);
-	
+
 	for (int i = 3; i <= number; ++i)
 	{
 		steps.push_back(steps[i - 1] + steps[i - 2]);
@@ -386,9 +386,9 @@ void testjumpFloor()
 /*题目描述
 一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
 思路：	初始条件：x(2) = 2, x(1) = 1;
-		递推公式：x(n) = x(n-1)+x(n-2).....+x(1) 
-				  x(n-1) = x(n-2)+......+x(1)
-		递推结果：x(n) = 2^(n-1)*(x(1))
+递推公式：x(n) = x(n-1)+x(n-2).....+x(1)
+x(n-1) = x(n-2)+......+x(1)
+递推结果：x(n) = 2^(n-1)*(x(1))
 ,
 */
 int jumpFloorII(int number) {
@@ -444,7 +444,7 @@ double Power(double base, int exponent) {
 	while (p > 0){
 		if (p & 1) ret *= base;
 		base *= base;
-		p >>= 1;			
+		p >>= 1;
 	}
 	return exponent < 0 ? 1 / ret : ret;
 }
@@ -500,13 +500,13 @@ void reOrderArray(vector<int> &array) {
 	/*int length = int(array.size());
 	vector<int>::iterator it = array.begin();
 	for (int i = 0; i < length; ++i){
-		if (*it % 2 == 0){
-			int tmp = *it;
-			array.erase(it);
-			array.push_back(tmp);
-		}
-		else
-			++it;
+	if (*it % 2 == 0){
+	int tmp = *it;
+	array.erase(it);
+	array.push_back(tmp);
+	}
+	else
+	++it;
 	}*/
 }
 void testreOrderArray()
@@ -606,17 +606,17 @@ void testMerge()
 /*题目描述
 输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
 思路：子树定义：树B是树A其中一个结点及其所有子孙以相同方式构成的树。
-      判定方法：
-	  测试用例:
-	  {8,8,7,9,2,#,#,#,#,4,7},{8,9,2}
+判定方法：
+测试用例:
+{8,8,7,9,2,#,#,#,#,4,7},{8,9,2}
 
-	  对应输出应该为:
+对应输出应该为:
 
-	  true
+true
 
-	  你的输出为:
+你的输出为:
 
-	  false
+false
 */
 bool HasSubtree(TreeNode* pRoot1, TreeNode* pRoot2)
 {
@@ -638,7 +638,7 @@ bool isSubTree(TreeNode* pRoot1, TreeNode* pRoot2){
 	if (nullptr == pRoot1)
 		return false;
 	if (pRoot1->val != pRoot2->val)
-		return false;	
+		return false;
 	return isSubTree(pRoot1->left, pRoot2->left) && isSubTree(pRoot1->right, pRoot2->right);
 }
 /*题目描述
@@ -672,10 +672,10 @@ void testMirror()
 }
 /*题目描述
 输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，
-例如，如果输入如下矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+例如，如果输入如下矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
 思路：顺时针：先递增列，到达n,再递增行，到达n,再递减列到达0，再递减行，到达1，再递增列，如此直到矩阵全部输出。
-	输出存储到vector 容器，相当于矩阵和数组下标的一一对应。
+输出存储到vector 容器，相当于矩阵和数组下标的一一对应。
 */
 vector<int> printMatrix(vector<vector<int> > matrix) {
 	vector<int> ret;
@@ -704,7 +704,7 @@ vector<int> printMatrix(vector<vector<int> > matrix) {
 		//第i列
 		++j;
 		--temp;
-		for (; temp > i && (col-i-1!=i); --temp)
+		for (; temp > i && (col - i - 1 != i); --temp)
 			ret.push_back(matrix[temp][j]);
 	}
 	return ret;
@@ -717,13 +717,13 @@ void testprintMatrix()
 		{ 5, 6, 7, 8 },
 		{ 9, 10, 11, 12 },
 		{ 13, 14, 15, 16 }
-	};*/
+		};*/
 	/*vector<vector<int>> mat{
 		{ 1 },
 		{ 5 },
 		{ 9 },
 		{ 13 }
-	};*/
+		};*/
 	vector<vector<int>> mat{
 		{ 1, 2, 3, 4 }
 	};
@@ -779,7 +779,7 @@ void testStack()
 假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4，5,3,2,1是该压栈序列对应的一个弹出序列，
 但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
 思路：用一个栈模拟入栈与出栈过程。按压入顺序数组的数入栈，直到入栈的数（即栈顶）与出栈顺序数组的数相等，
-	则按逆序将模拟栈里与出栈顺序数组相同的数弹出；修改出栈顺序数组的索引。* 如果循环结束，而stack中还有元素，就说明arr2序列不是pop序列。
+则按逆序将模拟栈里与出栈顺序数组相同的数弹出；修改出栈顺序数组的索引。* 如果循环结束，而stack中还有元素，就说明arr2序列不是pop序列。
 */
 bool IsPopOrder(vector<int> pushV, vector<int> popV) {
 	int lenPush = int(pushV.size());
@@ -857,8 +857,258 @@ void testPrintFromTopToBottom()
 /*题目描述
 输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。
 假设输入的数组的任意两个数字都互不相同。
-思路：
+思路：BST的后序序列的合法序列是，对于一个序列S，最后一个元素是x （也就是根），
+如果去掉最后一个元素的序列为T，那么T满足：T可以分成两段，前一段（左子树）小于x，
+后一段（右子树）大于x，且这两段（子树）都是合法的后序序列。完美的递归定义 : ) 。
+注意：[5,4,3,2,1]和{ 1, 2, 3, 4, 5 }为特殊情况，
 */
 bool VerifySquenceOfBST(vector<int> sequence) {
+	int length = int(sequence.size());
+	if (length < 1)
+		return false;
+	return verify_post_order_seq(sequence, 0, length - 1);
+}
+bool verify_post_order_seq(vector<int> & seq, int s, int e)
+{
+	if (s >= e)return true;
+	int i = e - 1;
+	while (i >= s && seq[i]>seq[e])
+		--i;
+	for (int j = i - 1; j >= s; --j)if (seq[j] > seq[e])return false;
+	return verify_post_order_seq(seq, s, i) && verify_post_order_seq(seq, i + 1, e - 1);
+}
+/*bool verify_post_order_seq(vector<int> & seq, int s, int e)
+{
+int length = e - s + 1;
+bool flag = false;
+if (length > 3){
+int ls = s;
+int rs = ls;
+while (seq[rs] < seq[e])
+++rs;
+int le = rs - 1;
+int re = e - 1;
+for (int i = rs; i <= re; ++i)
+if (seq[i] <= seq[e])
+return false;
+return verify_post_order_seq(seq, ls, le) && verify_post_order_seq(seq, rs, re);
+}
+else if(length == 3){
+if (seq[s] < seq[e] && seq[e] < seq[e - 1])
+flag = true;
+else if (seq[s]<seq[s + 1] && seq[s + 1] < seq[e])
+flag = true;
+else if (seq[s] > seq[s + 1] && seq[s + 1]>seq[e])
+flag = true;
+}
+else {
+flag = true;
+}
+return flag;
+}*/
+void testVerifySquenceOfBST()
+{
+	//vector<int> PostOrderSeq = { 5, 7, 6, 9, 11, 10, 8 };
+	//vector<int> PostOrderSeq = { 4, 6, 12, 8, 16, 14, 10 };
+	//vector<int> PostOrderSeq = { 5, 7, 6, 11, 12, 10, 8 };
+	vector<int> PostOrderSeq = { 1, 2, 3, 4, 5 };
+	cout << "The Seq " << (VerifySquenceOfBST(PostOrderSeq) ? "is" : "isn't") << " a PostOrder of BST !\n ";
+}
+/*题目描述
+输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+思路：深度优先遍历所有路径，存在vector<int> 中, 如果满足到叶节点时 = expectNumber Push 并返回
+*/
+vector<vector<int> > FindPath(TreeNode* root, int expectNumber) {
+	vector<vector<int>> ret;
+	if (nullptr == root)
+		return ret;
+	stack<TreeNode*> stk;
+	stk.push(root);
+	vector<int> path;
+	int sumPath = 0;
+	expectPath(stk, ret, path, sumPath, expectNumber);
+	return ret;
+}
+bool isLeaf(TreeNode * node)
+{
+	return (nullptr == node->left && nullptr == node->right) ? true : false;
+}
+void expectPath(stack<TreeNode *> & stk, vector<vector<int>> & allPath, vector<int> & currentPath,int & sumPath, int expectNumber)
+{
+	TreeNode * root = stk.top();
+	currentPath.push_back(root->val);
+	sumPath += root->val;
+	if (isLeaf(root)){
+		if (expectNumber == sumPath){
+			vector<int> add = currentPath;
+			allPath.push_back(add);
+		}
+	}
+	else{
+		if (nullptr != root->left){
+			stk.push(root->left);
+			expectPath(stk, allPath, currentPath, sumPath, expectNumber);
+		}
+		if (nullptr != root->right){
+			stk.push(root->right);
+			expectPath(stk, allPath, currentPath, sumPath, expectNumber);
+		}
+	}
+	currentPath.pop_back();
+	sumPath -= root->val;
+	stk.pop();
+}
+void testFindPath()
+{
+	vector<int> pre = { 1, 2, 6, 7, 3, 5, 4, 8 };
+	vector<int> vin = { 6, 7, 2, 1, 5, 3, 8, 4 };
+	TreeNode * root = reConstructBinaryTree(pre, vin);
+	vector<vector<int>> result = FindPath(root, 16);
+	for (auto vvi : result){
+		for (auto vi : vvi){
+			cout << vi << " ";
+		}
+		cout << endl;
+	}
+	//cout << "PreOrder Print:";
+	//printBiT(root, ModeBiT::PreOrder);
+}
+/*题目描述
+输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点），
+返回结果为复制后复杂链表的head。（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+思路：
+*/
+//思路1：先以主线next复制所有节点，再通过查找逐一匹配每个节点的random，然后设置复制节点的random
+//RandomListNode* Clone(RandomListNode* pHead)
+//{
+//	if (nullptr == pHead)
+//		return nullptr;
+//	RandomListNode* ret = new RandomListNode(pHead->label);
+//	RandomListNode* p = ret;
+//	RandomListNode* h = pHead;
+//	while (h->next){
+//		RandomListNode* q = new RandomListNode(h->next->label);
+//		p->next = q;
+//		p = q;
+//		h = h->next;
+//	}
+//	h = pHead;
+//	p = ret;
+//	RandomListNode* q;
+//	RandomListNode* r;
+//	while (nullptr != h){
+//		if (nullptr != h->random){
+//			r = pHead;
+//			q = ret;
+//			while (r != h->random){
+//				r = r->next;
+//				q = q->next;
+//			}
+//			p->random = q;
+//		}
+//		h = h->next;
+//		p = p->next;
+//	}
+//	return ret;
+//}
+
+//思路2：由于思路1采用的查找方法复杂度为O(n^2)，
+//可以通过借助哈希表存储 <N, copy_N>，原表中 N->random 指向的 S，通过hash表可以直接找到 copy_N->random指向copy_S
+//RandomListNode* Clone(RandomListNode* pHead){
+//	if (nullptr == pHead)
+//		return nullptr;
+//	RandomListNode* ret = new RandomListNode(pHead->label);
+//	RandomListNode* h = pHead;
+//	RandomListNode* p = ret;
+//
+//  //hash_map<RandomListNode*, RandomListNode*> hm;
+//	unordered_map<RandomListNode*, RandomListNode*> hm;
+//	hm.insert(pair<RandomListNode*, RandomListNode*>(h, p));
+//	while (nullptr != h->next){
+//		RandomListNode* q = new RandomListNode(h->next->label);
+//		p->next = q;		
+//		p = q;
+//		h = h->next;
+//		hm.insert(pair<RandomListNode*, RandomListNode*>(h, p));
+//	}
+//	
+//	h = pHead;
+//	p = ret;
+//	while (nullptr != h){
+//		if (nullptr != h->random){
+//			p->random = hm.at(h->random);
+//		}
+//		h = h->next;
+//		p = p->next;
+//	}
+//	return ret;
+//}
+
+//思路3：为了不用额外空间，仍使时间复杂度为O(n)，我们在每次复制N时，将 copy_N 插入在N的后面，即 copy_N->next = N->next, N->next = copy_N;
+// 这样，某个节点的random 就是原节点的random 的 next
+/*
+测试用例:
+{1, 2, 3, 4, 5, 3, 5, #, 2, #}
+对应输出应该为:
+{1, 2, 3, 4, 5, 3, 5, #, 2, #}
+你的输出为:
+空。请检查一下你的代码，有没有循环输入处理多个case。*/
+RandomListNode* Clone(RandomListNode* pHead){
+	if (nullptr == pHead)
+		return nullptr;
+	RandomListNode* ret = new RandomListNode(pHead->label);
+	RandomListNode* h = pHead;
+	RandomListNode* p = ret;
+	p->next = h->next;
+	h->next = p;
+	h = p->next;
+	while (nullptr != h){
+		RandomListNode* q = new RandomListNode(h->label);
+		q->next = h->next;
+		h->next = q;
+		h = q->next;
+	}
+	h = pHead;
+	p = ret;
+	while (nullptr != h){
+		p = h->next; // h->next 必定是非空指针，因为之前逐一复制并放在原节点后面，所以必定存在
+		if (nullptr != h->random){
+			p->random = h->random->next;
+		}
+		h = p->next;		
+	}
+
+	h = pHead;
+	while (nullptr != h->next){
+		p = h->next;
+		h->next = p->next;
+		h = p;
+	}
+	return ret;
+}
+void testClone()
+{
+	RandomListNode* head = new RandomListNode(0);
+	RandomListNode* p;
+	for (int i = 5; i > 0; --i)
+	{
+		p = new RandomListNode(i);
+		p->next = head->next;
+		head->next = p;
+	}
+	head->random = p->next;
+	p->random = head;
+	p->next->random = p->next->next;
+	p->next->next->next->next->random = p->next->next->next;
+	RandomListNode* result = Clone(head);
+	cout << "Clone end!\n";
+}
+/*题目描述
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
+思路：
+*/
+TreeNode* Convert(TreeNode* pRootOfTree)
+{
 
 }

@@ -22,8 +22,10 @@ int _tmain(int argc, _TCHAR* argv[])
 //	testprintMatrix();				//1.16
 //	testStack();					//1.17
 //	testIsPopOrder();				//2.1
-	testPrintFromTopToBottom();		//2.2
-
+//	testPrintFromTopToBottom();		//2.2
+//	testVerifySquenceOfBST();		//2.3
+//	testFindPath();					//2.4
+	testClone();					//2.5
 
 //	Singleton* sig1 = Singleton::getInstance();
 //	Singleton* sig2 = Singleton::getInstance();

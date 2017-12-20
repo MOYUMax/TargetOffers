@@ -8,7 +8,8 @@
 #include <algorithm>
 #include <stack>
 #include <queue>
-
+#include <hash_map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -76,4 +77,20 @@ void testIsPopOrder();
 vector<int> PrintFromTopToBottom(TreeNode* root);
 void level_traversal(deque<TreeNode*> & dq, vector<int> & vti);
 void testPrintFromTopToBottom();
+bool VerifySquenceOfBST(vector<int> sequence);
+bool verify_post_order_seq(vector<int> & seq, int s, int e);
+void testVerifySquenceOfBST();
+vector<vector<int> > FindPath(TreeNode* root, int expectNumber);
+bool isLeaf(TreeNode * node);
+void expectPath(stack<TreeNode *> & stk, vector<vector<int>> & allPath, vector<int> & currentPath, int & sumPath, int expectNumber);
+void testFindPath();
+struct RandomListNode {
+	int label;
+	struct RandomListNode *next, *random;
+	RandomListNode(int x) :
+		label(x), next(nullptr), random(nullptr) {
+	}
+};
+RandomListNode* Clone(RandomListNode* pHead);
+void testClone();
 #endif
