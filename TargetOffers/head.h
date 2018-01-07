@@ -10,8 +10,18 @@
 #include <queue>
 #include <hash_map>
 #include <unordered_map>
+#include <deque>
+#include <map>
 
 using namespace std;
+//´òÓ¡·Âº¯Êý
+template <class T>
+struct display{
+	void operator()(const T& x) const
+	{
+		cout << x << ' ';
+	}
+};
 
 bool Find(int target, vector<vector<int> > array);
 void testFind();
@@ -93,4 +103,15 @@ struct RandomListNode {
 };
 RandomListNode* Clone(RandomListNode* pHead);
 void testClone();
+TreeNode* Convert(TreeNode* pRootOfTree);
+void InorderTrval(TreeNode* root, deque<TreeNode*> & deq);
+void testConvert();
+vector<string> Permutation(string str);
+void testPermutation();
+int MoreThanHalfNum_Solution(vector<int> numbers);
+void testMoreThanHalfNum_Solution();
+vector<int> GetLeastNumbers_Solution(vector<int> input, int k);
+void testGetLeastNumbers_Solution();
+int FindGreatestSumOfSubArray(vector<int> array);
+void testFindGreatestSumOfSubArray();
 #endif

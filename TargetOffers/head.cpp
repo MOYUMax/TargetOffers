@@ -1106,9 +1106,207 @@ void testClone()
 }
 /*题目描述
 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
-思路：
+思路：中序遍历二叉搜索树即是排好序的，利用队列出队的时候构成双向链表, left == prve, right == next
 */
 TreeNode* Convert(TreeNode* pRootOfTree)
+{
+	if (nullptr == pRootOfTree)
+		return nullptr;
+	
+	deque<TreeNode*> deq;
+	InorderTrval(pRootOfTree, deq);
+	TreeNode* result = deq.front();
+	result->left = nullptr;
+	TreeNode *p, *q;
+	p = result;
+	deq.pop_front();
+//#define DEBUG 1
+#ifdef DEBUG
+	cout << p->val << " ";
+#endif // DEBUG		
+	while (!deq.empty()){	
+		q = deq.front();
+		p->right = q;
+		q->left = p;
+		p = q;
+		deq.pop_front();
+#ifdef DEBUG
+		cout << p->val << " ";
+#endif // DEBUG	
+	}
+	p->right = nullptr;
+	return result;
+}
+void InorderTrval(TreeNode* root, deque<TreeNode*> & deq)
+{
+	if (nullptr == root)
+		return;
+	else{
+		InorderTrval(root->left, deq);
+		deq.push_back(root);
+		InorderTrval(root->right, deq);
+		return;
+	}
+}
+void testConvert()
+{
+	vector<int> pre = { 4, 2, 1, 3, 6, 5, 7, 8 };
+	vector<int> vin = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	TreeNode * root = reConstructBinaryTree(pre, vin);
+		cout << "PreOrder Print:";
+	printBiT(root, ModeBiT::PreOrder);
+	cout << "\nInOrder Print:";
+	printBiT(root, ModeBiT::InOrder);
+	cout << "\nPostOrder Print:";
+	printBiT(root, ModeBiT::PostOrder);
+	
+	cout << "\nAfter Convert to delink：";
+	TreeNode * ret = Convert(root);
+}
+/*题目描述
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+输入描述:输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
+思路：利用sort算法先排序str中的char， 借鉴实现STL中的next_permutation。	
+*/
+vector<string> Permutation(string str) {
+	vector<string> result;
+	if (str.size() < 1){
+		return result;
+	}
+	sort(str.begin(), str.end());
+	result.push_back(str);
+	
+#define DEBUG 0
+#ifdef DEBUG
+	int count = 1;
+	cout << "Permutation:\n" << count << ":" << str << endl;
+#endif	
+	while (next_permutation(str.begin(), str.end())){
+		result.push_back(str);
+		
+#ifdef DEBUG
+		++count;
+		cout << count << ":" << str << endl;
+#endif	
+	}
+	return result;
+}
+void testPermutation()
+{
+	string str = "affbb";
+	vector<string> ret = Permutation(str);
+}
+/*题目描述
+数组中有一个数字出现的次数超过(>)数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。
+由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+思路：超过数组长度一半的数字只要存在，那就只能有一个。利用map来计算某个数字的长度。
+*/
+int MoreThanHalfNum_Solution(vector<int> numbers) {
+	int length = int(numbers.size());
+	if (length <= 0)
+		return 0;
+	if (length == 1)
+		return numbers[0];
+	unordered_map<int, int> umap;
+	//map<int, int> umap;
+	const int threshold = length / 2 + 1;
+	for (int i = 0; i < length; ++i){
+		//pair<vector<int>::iterator, bool> ret = umap.insert(make_pair(numbers[i], 1));
+		auto ret = umap.insert(make_pair(numbers[i], 1));
+		if (!ret.second){
+			++umap.at(numbers[i]);
+			if (threshold <= umap.at(numbers[i]))
+				return numbers[i];
+		}
+	}
+	return 0;
+}
+void testMoreThanHalfNum_Solution()
+{
+	vector<int> v0;
+	cout << MoreThanHalfNum_Solution(v0) << endl;
+	vector<int> v1 = { 1 };
+	cout << MoreThanHalfNum_Solution(v1) << endl;
+	vector<int> v2 = { 1, 2 };
+	cout << MoreThanHalfNum_Solution(v2) << endl;
+	vector<int> v22 = { 2, 2 };
+	cout << MoreThanHalfNum_Solution(v22) << endl;
+	vector<int> v3 = { 1, 2, 2, 2, 3, 4, 2 };
+	cout << MoreThanHalfNum_Solution(v3) << endl;
+}
+/*题目描述
+输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+思路：排序，取前K个数不就行了
+*/
+vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+	vector<int> result;
+	int length = input.size();
+	if (length <= 0 || length < k)
+		return result;
+	sort(input.begin(), input.end());	
+	for (int i = 0; i < k; ++i)
+		result.push_back(input[i]);
+	return result;
+}
+void testGetLeastNumbers_Solution()
+{
+	vector<int> v0;
+	vector<int> ret = GetLeastNumbers_Solution(v0,5);
+	vector<int> v1 = { 1 };
+	ret = GetLeastNumbers_Solution(v1, 5);
+	vector<int> v2 = { 1113, 20, 45236, 5, 6, 222, 345 };
+	ret = GetLeastNumbers_Solution(v2, 5);
+	for_each(ret.begin(), ret.end(), display<int>());
+}
+/*题目描述
+HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:
+在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。
+但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},
+连续子向量的最大和为8(从第0个开始,到第3个为止)。你会不会被他忽悠住？(子向量的长度至少是1)
+
+思路：		参考《编程珠玑》给出的一种解法，最快能达到O(n)。
+题目：写一个程序，求出一个数组中连续数和最大的，返回和，比如 { -1,1,2,0,3}，返回 1 + 2 + 0 + 3 = 6这道题有很多组解法，
+思路是：
+1.前i个元素中，最大总和子数组要么在前i-1个元素中（将其存储在maxsofar中），要么结束位置为i（将其存储在maxendinghere中）
+2.每次得出maxendinghere后，都与maxsofar相比较，如果大于maxsofar，则更新maxsofar
+3.每次指针后移一位，maxendinghere被更新后，都判断是否大于0，如果大于0，则maxendinghere更新为最新值，因为往后加有可能成为最大值。
+	如果小于0，那就将maxendinghere更新为0
+测试用例:[-2,-8,-1,-5,-9]
+对应输出应该为:-1
+你的输出为:0
+*/
+int FindGreatestSumOfSubArray(vector<int> array) {
+	int length = array.size();
+	if (length <= 0)
+		return 0;
+	if (1 == length)
+		return array[0];
+	int maxsofar = array[0];
+	int maxending = array[0];
+	for (int i = 1; i < length; ++i){
+		maxending = max(array[i], maxending + array[i]);
+		maxsofar = max(maxsofar, maxending);
+	}
+	return maxsofar;
+}
+void testFindGreatestSumOfSubArray()
+{
+	vector<int> v0;
+	//cout << FindGreatestSumOfSubArray(v0) << endl;
+	vector<int> v1 = { 6, -3, -2, 7, -15, 1, 2, 2 };
+	cout << FindGreatestSumOfSubArray(v1) << endl;
+	vector<int> v2 = { -1, 1, 2, 0, 3 };
+	cout << FindGreatestSumOfSubArray(v2) << endl;
+	vector<int> v3 = { -2, -8, -1, -5, -9 };
+	cout << FindGreatestSumOfSubArray(v3) << endl;
+}
+/*题目描述
+求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？
+为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,
+但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,可以很快的求出任意非负整数区间中1出现的次数。
+思路：
+*/
+int NumberOf1Between1AndN_Solution(int n)
 {
 
 }

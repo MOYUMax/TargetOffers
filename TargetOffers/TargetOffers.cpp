@@ -25,7 +25,12 @@ int _tmain(int argc, _TCHAR* argv[])
 //	testPrintFromTopToBottom();		//2.2
 //	testVerifySquenceOfBST();		//2.3
 //	testFindPath();					//2.4
-	testClone();					//2.5
+//	testClone();					//2.5
+//	testConvert();					//2.6
+//	testPermutation();				//2.7
+//	testMoreThanHalfNum_Solution();	//2.8
+//	testGetLeastNumbers_Solution();	//2.9
+	testFindGreatestSumOfSubArray();//2.10
 
 //	Singleton* sig1 = Singleton::getInstance();
 //	Singleton* sig2 = Singleton::getInstance();
