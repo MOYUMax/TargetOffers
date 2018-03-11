@@ -1301,12 +1301,223 @@ void testFindGreatestSumOfSubArray()
 	cout << FindGreatestSumOfSubArray(v3) << endl;
 }
 /*题目描述
-求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？
+求出1~13的整数中1出现 的次数,并算出100~1300的整数中1出现的次数？
 为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,
 但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,可以很快的求出任意非负整数区间中1出现的次数。
-思路：
+思路：方法一：从1到n，对每个数的每一位取10的余，来计数1的个数，求和。
+方法二：
+设N = abcde ,其中abcde分别为十进制中各位上的数字。
+如果要计算百位上1出现的次数，它要受到3方面的影响：百位上的数字，百位以下（低位）的数字，百位以上（高位）的数字。
+① 如果百位上数字为0，百位上可能出现1的次数由更高位决定。比如：12013，则可以知道百位出现1的情况可能是：100~199，1100~1199,2100~2199，，...，
+11100~11199，一共1200个。可以看出是由更高位数字（12）决定，并且等于更高位数字（12）乘以 当前位数（100）。
+② 如果百位上数字为1，百位上可能出现1的次数不仅受更高位影响还受低位影响。比如：12113，则可以知道百位受高位影响出现的情况是：
+100~199，1100~1199,2100~2199，，....，11100~11199，一共1200个。和上面情况一样，并且等于更高位数字（12）乘以 当前位数（100）。
+但同时它还受低位影响，百位出现1的情况是：12100~12113,一共114个，等于低位数字（113）+1。
+③ 如果百位上数字大于1（2~9），则百位上出现1的情况仅由更高位决定，比如12213，则百位出现1的情况是：100~199,1100~1199，2100~2199，...，
+11100~11199,12100~12199,一共有1300个，并且等于更高位数字+1（12+1）乘以当前位数（100）。
 */
+/*
 int NumberOf1Between1AndN_Solution(int n)
 {
+	int result = 0;
+	for (int i = 1; i <= n; ++i){
+		result += NumberOf1DEX(i);
+	}
+	return result;
+}
 
+int NumberOf1DEX(int n)
+{
+	int result = 0;
+	while (n){
+		if (n % 10 == 1)
+			++result;
+		n /= 10;
+	}
+	return result;
+}
+*/
+/*
+int NumberOf1Between1AndN_Solution(int n)
+{
+	int result = 0;
+	int i = 1; 
+	int current = 0, before = 0, after = 0;
+	while ((n / i) != 0){
+		current = (n / i) % 10;//当前位
+		before = n / (i * 10);//所有高位数字
+		after = n - (n / i)*i;//所有低位数字
+		//current如果为0,出现1的次数由高位决定,等于高位数字 * 当前位数
+		if (0 == current){
+			result += before*i;
+		}
+		//如果为1,出现1的次数由高位和低位决定,高位*当前位+低位+1
+		else if (1 == current){
+			result += (before*current + after + 1);
+		}
+		//如果大于1,出现1的次数由高位决定,（高位数字+1）* 当前位数
+		else{
+			result += (before + 1)*i;
+		}
+		i *= 10;//向高位前进一位，然后把每个位1可能出现的次数都计算后求和即结果
+	}
+	return result;
+}
+*/
+
+int NumberOf1Between1AndN_Solution(int n){
+	
+	//int ones = 0;
+	//for (long long m = 1; m <= n; m *= 10) {
+	//	int a = n / m, b = n%m;
+	//	ones += (a + 8) / 10 * m + (a % 10 == 1) * (b + 1);
+	//}
+	//return ones;
+	
+	int ones = 0;
+	for (long long m = 1; m <= n; m *= 10)
+		ones += (n / m + 8) / 10 * m + (n / m % 10 == 1) * (n%m + 1);
+	return ones;
+}
+
+void testNumberOf1Between1AndN_Solution()
+{
+	int n = 0;
+	while (cin >> n){
+		cout << "The NumberOf1Between1AndN_Solution :" << n << " = " << NumberOf1Between1AndN_Solution(n) << endl;
+	}
+}
+/*题目描述
+输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+思路：
+*/
+string int_to_string(int n)
+{
+	ostringstream ostream;
+	ostream << n;
+	return ostream.str();
+}
+bool Compare(string str1, string str2)
+{
+//	string str12 = str1 + str2;
+//	string str21 = str2 + str1;
+//	return str12 < str21 ? true : false;
+	return (str1 + str2) < (str2 + str1) ? true : false;
+}
+string PrintMinNumber(vector<int> numbers) {
+	int length = numbers.size();
+	string result;
+	if (0 >= length)
+		return result;
+	if (1 == length){
+		//result = int_to_string(numbers[0]);
+		result = std::to_string(numbers[0]);
+		return result;
+	}
+	vector<string> tmp_str;
+	for (int i = 0; i < length; ++i){
+		tmp_str.push_back(std::to_string(numbers[i]));
+		//tmp_str.push_back(int_to_string(numbers[i]));
+	}
+	sort(tmp_str.begin(), tmp_str.end(), Compare);
+	for each (string var in tmp_str)
+	{
+		result += var;
+	}
+	return result;
+}
+void testPrintMinNumber()
+{
+	vector<int> vNum = { 3, 32, 321 };
+	string ret = PrintMinNumber(vNum);
+	cout << ret << endl;
+}
+/*题目描述
+把只包含因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。
+习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+思路：把前N 个丑数找出来，返回第N个。计算量太大，超时
+方法二：丑数就是2^x*3^y*5^z,而且是根据前一个数的大小相关的，可以用3个队列来作为基础。每轮取最小的数。
+方法三：使用动态规划，后一个丑数是前一个丑数*2、*3、*5其中一个得来的。
+
+*/
+bool UglyNumber(int n)
+{
+	while (n % 2 == 0)
+		n /= 2;
+	while (n % 3 == 0)
+		n /= 3;
+	while (n % 5 == 0)
+		n /= 5;
+	return (n == 1) ? true : false;
+}
+int GetUglyNumber_Solution(int index) {
+	if (index <= 0)
+		return 0;
+	if (index == 1)
+		return 1;
+	int n = 1;
+	int i = 2;
+	while (i<=index){
+		++n;
+		if (UglyNumber(n)){
+//			cout << i << " ugly number: " << n << endl;
+			++i;			
+		}		
+	}
+	return n;
+}
+
+//int GetUglyNumber_Solution2(int index) {
+//	if (index <= 0)
+//		return 0;
+//	vector<int> uglyNum(index);
+//	uglyNum[0] = 1;
+//	int nextNumindex = 1;
+//	while (nextNumindex < index){
+//		int min = Min()
+//		for (int i = 0; i < nextNumindex;++i)
+//
+//	}
+//
+//}
+void testGetUglyNumber_Solution()
+{
+	int n = 1;
+	while (cin >> n){
+		cout << "The " << n << " ugly number is:" << GetUglyNumber_Solution(n) << endl;
+	}
+}
+
+void strswap(string & input, int i, int j){
+	int length = input.length();
+	if (i >= length || j >= length || i < 0 || j < 0)
+		return ;
+	if (i != j){
+		input[i] = input[i] + input[j];
+		input[j] = input[i] - input[j];
+		input[i] = input[i] - input[j];
+	}
+	//cout << "Exc " << i << input[i] << "to " << j << input[j] << " get:" << input << endl;
+	return ;
+}
+
+void testStrswap()
+{
+	string input = "First";
+	while (cin >> input){
+		int length = input.length();
+		int flag = length - 1;
+		for (int i = length - 1; i >= 0; --i){
+			if (isupper(input[i])){
+				int  j = i;
+				while (j < flag){
+					strswap(input, j, j + 1);
+					++j;
+				}
+				--flag;
+			}
+		}
+		cout << input << endl;
+	}
 }

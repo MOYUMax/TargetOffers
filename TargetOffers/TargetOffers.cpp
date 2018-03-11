@@ -30,8 +30,11 @@ int _tmain(int argc, _TCHAR* argv[])
 //	testPermutation();				//2.7
 //	testMoreThanHalfNum_Solution();	//2.8
 //	testGetLeastNumbers_Solution();	//2.9
-	testFindGreatestSumOfSubArray();//2.10
-
+//	testFindGreatestSumOfSubArray();//2.10
+//	testNumberOf1Between1AndN_Solution();//2.11
+//	testPrintMinNumber();			//2.12
+//	testGetUglyNumber_Solution();	//2.13
+	testStrswap();
 //	Singleton* sig1 = Singleton::getInstance();
 //	Singleton* sig2 = Singleton::getInstance();
 

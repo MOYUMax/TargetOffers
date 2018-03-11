@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <deque>
 #include <map>
+#include <sstream> //int to string
+
 
 using namespace std;
 //´òÓ¡·Âº¯Êý
@@ -114,4 +116,16 @@ vector<int> GetLeastNumbers_Solution(vector<int> input, int k);
 void testGetLeastNumbers_Solution();
 int FindGreatestSumOfSubArray(vector<int> array);
 void testFindGreatestSumOfSubArray();
+int NumberOf1Between1AndN_Solution(int n);
+int NumberOf1DEX(int n);
+void testNumberOf1Between1AndN_Solution();
+string PrintMinNumber(vector<int> numbers);
+string int_to_string(int n);
+bool Compare(string str1, string str2);
+void testPrintMinNumber();
+bool UglyNumber(int n);
+int GetUglyNumber_Solution(int index);
+void testGetUglyNumber_Solution();
+void strswap(string & input, int i, int j);
+void testStrswap();
 #endif
