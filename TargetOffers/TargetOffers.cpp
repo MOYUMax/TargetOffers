@@ -34,7 +34,7 @@ int _tmain(int argc, _TCHAR* argv[])
 //	testNumberOf1Between1AndN_Solution();//2.11
 //	testPrintMinNumber();			//2.12
 //	testGetUglyNumber_Solution();	//2.13
-	testStrswap();
+	testStrswap();			//腾讯实习生编程题2
 //	Singleton* sig1 = Singleton::getInstance();
 //	Singleton* sig2 = Singleton::getInstance();
 
